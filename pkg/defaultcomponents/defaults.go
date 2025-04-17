@@ -41,6 +41,7 @@ import (
 	"github.com/open-telemetry/opentelemetry-collector-contrib/processor/filterprocessor"
 	"github.com/open-telemetry/opentelemetry-collector-contrib/processor/groupbytraceprocessor"
 	"github.com/open-telemetry/opentelemetry-collector-contrib/processor/k8sattributesprocessor"
+	"github.com/open-telemetry/opentelemetry-collector-contrib/processor/logstransformprocessor"
 	"github.com/open-telemetry/opentelemetry-collector-contrib/processor/metricsgenerationprocessor"
 	"github.com/open-telemetry/opentelemetry-collector-contrib/processor/metricstransformprocessor"
 	"github.com/open-telemetry/opentelemetry-collector-contrib/processor/probabilisticsamplerprocessor"
@@ -48,10 +49,12 @@ import (
 	"github.com/open-telemetry/opentelemetry-collector-contrib/processor/resourceprocessor"
 	"github.com/open-telemetry/opentelemetry-collector-contrib/processor/spanprocessor"
 	"github.com/open-telemetry/opentelemetry-collector-contrib/processor/tailsamplingprocessor"
+	"github.com/open-telemetry/opentelemetry-collector-contrib/processor/transformprocessor"
 	"github.com/open-telemetry/opentelemetry-collector-contrib/receiver/awscontainerinsightreceiver"
 	"github.com/open-telemetry/opentelemetry-collector-contrib/receiver/awsecscontainermetricsreceiver"
 	"github.com/open-telemetry/opentelemetry-collector-contrib/receiver/awsxrayreceiver"
 	"github.com/open-telemetry/opentelemetry-collector-contrib/receiver/filelogreceiver"
+	"github.com/open-telemetry/opentelemetry-collector-contrib/receiver/fluentforwardreceiver"
 	"github.com/open-telemetry/opentelemetry-collector-contrib/receiver/jaegerreceiver"
 	"github.com/open-telemetry/opentelemetry-collector-contrib/receiver/kafkareceiver"
 	"github.com/open-telemetry/opentelemetry-collector-contrib/receiver/prometheusreceiver"
@@ -121,6 +124,7 @@ func Components() (otelcol.Factories, error) {
 		zipkinreceiver.NewFactory(),
 		otlpreceiver.NewFactory(),
 		filelogreceiver.NewFactory(),
+		fluentforwardreceiver.NewFactory(),
 	}
 
 	receivers, err := receiver.MakeFactoryMap(receiverList...)
@@ -132,6 +136,7 @@ func Components() (otelcol.Factories, error) {
 	processorList := []processor.Factory{
 		groupbytraceprocessor.NewFactory(),
 		tailsamplingprocessor.NewFactory(),
+		transformprocessor.NewFactory(),
 		attributesprocessor.NewFactory(),
 		resourceprocessor.NewFactory(),
 		probabilisticsamplerprocessor.NewFactory(),
@@ -146,6 +151,7 @@ func Components() (otelcol.Factories, error) {
 		batchprocessor.NewFactory(),
 		memorylimiterprocessor.NewFactory(),
 		k8sattributesprocessor.NewFactory(),
+		logstransformprocessor.NewFactory(),
 	}
 	processors, err := processor.MakeFactoryMap(processorList...)
 
